@@ -1,23 +1,23 @@
-./testPitch 
+./testPitchDetection
 The maximum frequency measured is 1280 Hz.
 The frequency resolution is 5.0 Hz.
 The length of the clip is 0.200s.
 
-Signal created in 0.051 ms.
-Signal analysed in 0.546 ms.
+Signal created in 0.073 ms.
+Signal analysed in 0.466 ms.
 
-(125 Hz, -18.21 dB, 0.1426)
-(250 Hz, -28.24 dB, 0.0926)
-(510 Hz, -24.71 dB, 0.0500)
+(125 Hz, -18.19 dB, 0.1426)
+(250 Hz, -28.22 dB, 0.0926)
+(510 Hz, -24.69 dB, 0.0500)
 
-(125 Hz, -18.21 dB, 0.1426)
+(125 Hz, -18.19 dB, 0.1426)
 
 Assert that pitch detected is 125 ± 2 Hz
     125
     PASS
 
 Assert that volume detected is -18.062 ± 1 dB
-    -18.214
+    -18.191
     PASS
 
-Test completed in 0.653 ms.
+Test completed in 0.618 ms.

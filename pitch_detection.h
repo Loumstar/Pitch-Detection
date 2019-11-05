@@ -1,16 +1,17 @@
 #ifndef PITCH_DETECTION_H
     #define PITCH_DETECTION_H
 
+    #include <complex.h>
     #include <string.h>
 
     #include "scripts/fourier_transform.h"
     #include "scripts/peaks_correlation.h"
     #include "scripts/peaks_analyser.h"
 
-    frequency_bin* get_pitches(int_complex sample[]);
+    frequency_bin* get_pitches(double complex sample[]);
 
     void get_pitch_bin(frequency_bin notes[], frequency_bin pitch_bin);
 
-    double get_pitch(int_complex sample[]);
+    double get_pitch(double complex sample[]);
 
 #endif

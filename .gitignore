@@ -1,0 +1,11 @@
+# Ignore exectuables
+*
+# Files with extensions are kept
+!*.*
+# Except object files and hidden files
+*.o
+.*
+# except .gitignore, .gitmodules and Makefiles
+!.gitignore
+!.gitmodules
+!Makefiles

@@ -1,9 +1,4 @@
-#include <math.h>
-
-#include "frequency_bin_typedef.h"
-
-#define PD_NORMAL_DIST_WIDTH 100.0
-#define PD_HARMONICS_ARR_SIZE 20
+#include "peaks_correlation.h"
 
 double* get_harmonics(double f){
     //method to return an array of frequencies that are harmonics of a frequency.
@@ -13,6 +8,7 @@ double* get_harmonics(double f){
     for(size_t h = 0; h < PD_HARMONICS_ARR_SIZE; h++){
         harmonics[h] = f * (h + 1);
     }
+
     return harmonics;
 }
 
@@ -24,20 +20,24 @@ double get_correlation(double f, frequency_bin notes[], size_t notes_array_size)
     and the correlation value returned is given by the probability at that point.
     */
     double c = 0;
+
     for(size_t s = 0; s < notes_array_size; s++){
         if(!isnan(notes[s][0])){
             c += pow(M_E, -1 * pow((4 * (f - notes[s][0]) / PD_NORMAL_DIST_WIDTH), 2));
         }
     }
+
     return c;
 }
 
 double test_harmonics(frequency_bin notes[], double harmonics[], size_t notes_array_size){
     //method to run get_correlation() for a set of harmonics.
     double correlation = 0;
+
     for(size_t h = 0; h < PD_HARMONICS_ARR_SIZE; h++){
         correlation += get_correlation(harmonics[h], notes, notes_array_size);
     }
+
     return correlation / PD_HARMONICS_ARR_SIZE;
 }
 
@@ -50,6 +50,7 @@ void get_note_probabilities(frequency_bin notes[], size_t notes_array_size){
     they fit all the notes in the spectrum.
     */
     double probability;
+    
     for(int p = 0; p < notes_array_size; p++){
         if(!isnan(notes[p][0])){
             double* harmonics = get_harmonics(notes[p][0]);

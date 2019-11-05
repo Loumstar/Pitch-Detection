@@ -1,12 +1,13 @@
 #ifndef PEAKS_ANALYSER_H
     #define PEAKS_ANALYSER_H
 
+    #include <complex.h>
     #include <stdbool.h>
-    #include <float.h>
     #include <stdlib.h>
+    #include <string.h>
+    #include <float.h>
     #include <math.h>
 
-    #include "../../int_complex/int_complex.h"
     #include "frequency_bin_typedef.h"
 
     //Number of frames recorded per second (typically 44.1kHz for CD).
@@ -23,6 +24,6 @@
     //The size of the array that holds all the possible notes of the pitch of the audio
     #define PD_NOTES_ARR_SIZE 20
 
-    frequency_bin* get_notes(const int_complex sample[]);
+    frequency_bin* get_notes(const double complex sample[]);
 
 #endif

@@ -1,0 +1,3 @@
+[submodule "tests/C-UnitTest"]
+	path = tests/C-UnitTest
+	url = git@github.com:Loumstar/C-UnitTest.git

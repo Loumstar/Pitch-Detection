@@ -1,6 +1,6 @@
 #include "pitch_detection.h"
 
-frequency_bin* get_pitches(int_complex sample[]){
+frequency_bin* get_pitches(double complex sample[]){
     //method that returns an array of pitch bins that are possible notes of the audio
     convert_to_frequency_domain(sample, PD_SAMPLE_ARR_SIZE);
     frequency_bin* notes = get_notes(sample);
@@ -25,7 +25,7 @@ void get_pitch_bin(frequency_bin notes[], frequency_bin pitch_bin){
     memcpy(pitch_bin, notes[j], FREQUENCY_BIN_SIZE);
 }
 
-double get_pitch(int_complex sample[]){
+double get_pitch(double complex sample[]){
     //method that returns the most probable pitch of the audio.
     frequency_bin* notes = get_pitches(sample);
     frequency_bin bin;

@@ -8,7 +8,7 @@ bool amplitude_is_above_threshold(double a, double average_amplitude){
     return a / average_amplitude > PD_NOTE_THRESHOLD;
 }
 
-double get_amplitude(const int_complex z){
+double get_amplitude(const double complex z){
     return cabs(z) * 2 / PD_SAMPLE_ARR_SIZE;
 }
 
@@ -17,7 +17,7 @@ double decibels(double v){
     return 20 * log10f(v / PD_SAMPLE_BIT_DEPTH);
 }
 
-double get_average_amplitude(int f, const int_complex sample[]){
+double get_average_amplitude(int f, const double complex sample[]){
     /*
     Method to determine the amplitude of frequencies surrounding the amplitude at f (average_amplitude).
 
@@ -49,7 +49,7 @@ double get_average_amplitude(int f, const int_complex sample[]){
     return sum / PD_AVRG_AMPLITUDE_ARR_SIZE;
 }
 
-frequency_bin* get_notes(const int_complex sample[]){
+frequency_bin* get_notes(const double complex sample[]){
     /*
     Method to determine the peak frequencies of a frequency spectrum, which are possible
     notes of the audio.
@@ -86,10 +86,12 @@ frequency_bin* get_notes(const int_complex sample[]){
             i++;
         }
     }
+    
     while(i < PD_NOTES_ARR_SIZE){ 
         //initialises unused positions in notes[] to a a standard form.
         memcpy(notes[i], NULL_FREQ_BIN, FREQUENCY_BIN_SIZE);
         i++;
     }
+
     return notes;
 }

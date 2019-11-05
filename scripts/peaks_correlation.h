@@ -1,6 +1,7 @@
 #ifndef PEAKS_CORRELATION_H
     #define PEAKS_CORRELATION_H
 
+    #include <stdlib.h>
     #include <math.h>
 
     #include "frequency_bin_typedef.h"
