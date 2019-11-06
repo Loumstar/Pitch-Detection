@@ -4,9 +4,11 @@ CFLAGS = -pedantic -Wall
 EXECUTABLES = testPitchDetection
 INCLUDES = -I./C-UnitTest/ -I../ -I../scripts/
 
+UNITTEST_O = ./C-UnitTest/unittest.o
+
 # Executable
-testPitchDetection: pitch_detection.test.o pitch_detection.o fourier_transform.o frequency_bin_typedef.o peaks_analyser.o peaks_correlation.o unittest.o
-	$(CC) $(CFLAGS) -o testPitchDetection pitch_detection.test.o pitch_detection.o fourier_transform.o frequency_bin_typedef.o peaks_analyser.o peaks_correlation.o unittest.o
+testPitchDetection: pitch_detection.test.o pitch_detection.o fourier_transform.o frequency_bin_typedef.o peaks_analyser.o peaks_correlation.o $(UNITTEST_O)
+	$(CC) -o testPitchDetection pitch_detection.test.o pitch_detection.o fourier_transform.o frequency_bin_typedef.o peaks_analyser.o peaks_correlation.o $(UNITTEST_O)
 
 # Object Files
 pitch_detection.test.o: pitch_detection.test.c
@@ -27,9 +29,7 @@ peaks_analyser.o: ../scripts/peaks_analyser.c
 peaks_correlation.o: ../scripts/peaks_correlation.c
 	$(CC) $(CFLAGS) $(INCLUDES) -o peaks_correlation.o -c ../scripts/peaks_correlation.c
 
-unittest.o: C-UnitTest/unittest.c
-	$(CC) $(CFLAGS) $(INCLUDES) -o unittest.o -c C-UnitTest/unittest.c
-
+# Misc
 .PHONY: clean, all
 
 clean:
