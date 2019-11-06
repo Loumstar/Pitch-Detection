@@ -2,13 +2,21 @@ CC = gcc
 CFLAGS = -pedantic -Wall
 
 EXECUTABLES = testPitchDetection
-INCLUDES = -I./C-UnitTest/ -I../ -I../scripts/
+
+OBJECT_FILES = pitch_detection.test.o \
+			   pitch_detection.o \
+			   fourier_transform.o \
+			   frequency_bin_typedef.o \
+			   peaks_analyser.o \
+			   peaks_correlation.o
+
+INCLUDES = -I../ -I../scripts/
 
 UNITTEST_O = ./C-UnitTest/unittest.o
 
 # Executable
-testPitchDetection: pitch_detection.test.o pitch_detection.o fourier_transform.o frequency_bin_typedef.o peaks_analyser.o peaks_correlation.o $(UNITTEST_O)
-	$(CC) -o testPitchDetection pitch_detection.test.o pitch_detection.o fourier_transform.o frequency_bin_typedef.o peaks_analyser.o peaks_correlation.o $(UNITTEST_O)
+testPitchDetection: $(OBJECT_FILES) $(UNITTEST_O)
+	$(CC) -o testPitchDetection $(OBJECT_FILES) $(UNITTEST_O)
 
 # Object Files
 pitch_detection.test.o: pitch_detection.test.c
@@ -33,7 +41,7 @@ peaks_correlation.o: ../scripts/peaks_correlation.c
 .PHONY: clean, all
 
 clean:
-	rm -v *.o $(EXECUTABLES)
+	rm -v $(EXECUTABLES) $(OBJECT_FILES)
 
 all:
 	make $(EXECUTABLES)
