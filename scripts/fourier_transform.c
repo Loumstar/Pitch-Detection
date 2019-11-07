@@ -1,7 +1,7 @@
 #include "fourier_transform.h"
 
-void print_complex_array(const double complex complex_arr[], size_t s){
-    for(size_t j = 0; j < s; j++){
+void print_complex_array(const double complex complex_arr[], size_t n){
+    for(size_t j = 0; j < n; j++){
         printf("%.3f + %.3fi\n", creal(complex_arr[j]), cimag(complex_arr[j]));
     }
 }
@@ -38,11 +38,11 @@ void fft(double complex sample[], double complex copy[], size_t n, size_t step){
     }
 }
 
-void convert_to_frequency_domain(double complex sample[], int sample_array_size){
+void convert_to_frequency_domain(double complex sample[], int sample_size){
     //copy the signal
-    double complex* copy = copy_signal(sample, sample_array_size);
+    double complex* copy = copy_signal(sample, sample_size);
     //runs fourier transform
-    fft(sample, copy, sample_array_size, 1);
+    fft(sample, copy, sample_size, 1);
     free(copy);
     //removes offset represented by the double complex value at 0 Hz
     sample[0] = 0;
