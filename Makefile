@@ -39,9 +39,11 @@ peaks_correlation.o: scripts/peaks_correlation.c
 	$(CC) $(CFLAGS) -o peaks_correlation.o -c scripts/peaks_correlation.c
 
 # Misc
-.PHONY: clean, all
+.PHONY: clean, all, objects
 
 clean:
 	rm -v $(EXECUTABLES) $(OBJECT_FILES)
 
-all: $(EXECUTABLES) $(OBJECT_FILES)
+all: $(EXECUTABLES)
+
+objects: $(OBJECT_FILES)
