@@ -21,8 +21,8 @@ void get_pitch_bin(frequency_bin notes[], frequency_bin pitch_bin){
             j = i;
         }
     }
-    
-    memcpy(pitch_bin, notes[j], FREQUENCY_BIN_SIZE);
+    if(j) memcpy(pitch_bin, notes[j], FREQUENCY_BIN_SIZE);
+    else memcpy(pitch_bin, NULL_FREQ_BIN, FREQUENCY_BIN_SIZE);
 }
 
 double get_pitch(double complex sample[], size_t sample_size, size_t sample_rate, size_t bit_depth){
