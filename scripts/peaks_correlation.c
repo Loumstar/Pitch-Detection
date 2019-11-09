@@ -22,7 +22,7 @@ double get_correlation(double f, frequency_bin notes[], size_t notes_array_size)
     double c = 0;
 
     for(size_t s = 0; s < notes_array_size; s++){
-        if(!isnan(notes[s][0])){
+        if(notes[s][0]){
             c += pow(M_E, -1 * pow((4 * (f - notes[s][0]) / PD_NORMAL_DIST_WIDTH), 2));
         }
     }
@@ -52,7 +52,7 @@ void get_note_probabilities(frequency_bin notes[], size_t notes_array_size){
     double probability;
     
     for(int p = 0; p < notes_array_size; p++){
-        if(!isnan(notes[p][0])){
+        if(notes[p][0]){
             double* harmonics = get_harmonics(notes[p][0]);
             
             if(!harmonics) break;
