@@ -90,7 +90,7 @@ int main(void){
     double pitch = pitch_bin[0];
 
     //Test whether pitch and volume are correct
-    printf("\nAssert that pitch detected is 125 ± 2 Hz\n");
+    printf("\nAssert that pitch detected is %d ± %d Hz\n", (int) a[0][0], (int) frequency_resolution);
     printf("    %.f\n", pitch);
     if(assert_double_similar(pitch, 125.0, frequency_resolution / 2)){
         printf("    PASS\n\n");
@@ -99,9 +99,9 @@ int main(void){
         return 1;
     }
 
-    printf("Assert that volume detected is -18.062 ± 1 dB\n");
+    printf("Assert that volume detected is %.3f ± 1 dB\n", 20 * log10f(a[0][1] / pow(2, bit_depth)));
     printf("    %.3f\n", volume);
-    if(assert_double_similar(volume, 20 * log10f(128.0 / 256.0), 1)){
+    if(assert_double_similar(volume, 20 * log10f(a[0][1] / pow(2, bit_depth)), 1)){
         printf("    PASS\n\n");
     } else {
         printf("    FAIL\n\n");
