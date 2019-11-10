@@ -7,6 +7,6 @@
     #include <stdio.h>
     #include <math.h>
     
-    void convert_to_frequency_domain(double complex sample[], int sample_size);
+    void convert_to_frequency_domain(double complex frame[], int frame_size);
 
 #endif

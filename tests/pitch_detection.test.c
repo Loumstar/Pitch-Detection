@@ -11,35 +11,35 @@ bool is_power_of_two(int x){
     return (x & (x - 1)) == 0;
 }
 
-double complex* create_signal(const double a[3][2], size_t sample_size, size_t sample_rate, double offset, size_t length){
+double complex* create_signal(const double a[3][2], size_t frame_size, size_t sample_rate, double offset, size_t length){
     /*
     Method to return an array of values that make up an oscillation.
     
     The oscillation can be a combination of frequencies and volumes and are returned
     as a double complex datatype with only real components, so fft can be applied to it.
     */
-    double complex* sample_signal = malloc(sizeof(double complex) * sample_size);
-    for(size_t i = 0; i < sample_size; i++){
+    double complex* frame_array = malloc(sizeof(double complex) * frame_size);
+    for(size_t i = 0; i < frame_size; i++){
         int sum = 0;
         for(size_t j = 0; j < length; j++){
             sum += a[j][1] * sin((double) 2 * M_PI * a[j][0] * i / sample_rate);
         }
-        sample_signal[i] = sum + offset;
+        frame_array[i] = sum + offset;
     }
-    return sample_signal;
+    return frame_array;
 }
 
 int main(void){
     clock_t main_start = clock();
     clock_t start, end;
 
-    size_t sample_size = 512;
+    size_t frame_size = 512;
     size_t bit_depth = 8;
     size_t sample_rate = 2560;
 
-    double frequency_resolution = sample_rate / sample_size;
+    double frequency_resolution = sample_rate / frame_size;
     
-    if(!is_power_of_two(sample_size)){
+    if(!is_power_of_two(frame_size)){
         printf("The number of frames in the clip must be a power of two.\n");
         return 1;
     }
@@ -47,7 +47,7 @@ int main(void){
     //Output basic properties of the transform.
     printf("The maximum frequency measured is %i Hz.\n", (int) sample_rate / 2);
     printf("The frequency resolution is %.1f Hz.\n", frequency_resolution);
-    printf("The length of the clip is %.3fs.\n\n", (double) sample_size / sample_rate);
+    printf("The length of the clip is %.3fs.\n\n", (double) frame_size / sample_rate);
 
     //example basic waveform.  
     size_t a_size = 3;   
@@ -60,15 +60,15 @@ int main(void){
 
     //measure time taken to create the 125 Hz signal.
     start = clock();
-    double complex* sample_signal = create_signal(a, sample_size, sample_rate, 0, a_size);
+    double complex* frame_array = create_signal(a, frame_size, sample_rate, 0, a_size);
     end = clock();
 
     printf("Signal created in %.3f ms.\n", (double) (end - start) / CLOCKS_PER_SEC * 1000);
-    if(!sample_signal) return 1;
+    if(!frame_array) return 1;
 
     //Measure time taken to determine all possible pitches
     start = clock();
-    frequency_bin* notes = get_pitches(sample_signal, sample_size, sample_rate, bit_depth);
+    frequency_bin* notes = get_pitches(frame_array, frame_size, sample_rate, bit_depth);
     end = clock();
 
     printf("Signal analysed in %.3f ms.\n\n", (double) (end - start) / CLOCKS_PER_SEC * 1000);
@@ -77,7 +77,7 @@ int main(void){
     frequency_bin pitch_bin;
     get_pitch_bin(notes, pitch_bin);
 
-    free(sample_signal);
+    free(frame_array);
     
     if(!notes) return 1;
 

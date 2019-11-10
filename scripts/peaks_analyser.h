@@ -18,6 +18,6 @@
     //The size of the array that holds all the possible notes of the pitch of the audio
     #define PD_NOTES_ARR_SIZE 20
 
-    frequency_bin* get_notes(const double complex sample[], size_t sample_size, size_t sample_rate, size_t bit_depth);
+    frequency_bin* get_notes(const double complex frame[], size_t frame_size, size_t sample_rate, size_t bit_depth);
 
 #endif

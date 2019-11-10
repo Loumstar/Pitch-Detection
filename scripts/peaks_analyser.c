@@ -8,8 +8,8 @@ bool amplitude_is_above_threshold(double a, double average_amplitude){
     return a / average_amplitude > PD_NOTE_THRESHOLD;
 }
 
-double get_amplitude(const double complex z, const size_t sample_size){
-    return cabs(z) * 2 / sample_size;
+double get_amplitude(const double complex z, const size_t frame_size){
+    return cabs(z) * 2 / frame_size;
 }
 
 double decibels(double v, const size_t bit_depth){
@@ -17,7 +17,7 @@ double decibels(double v, const size_t bit_depth){
     return 20 * log10f(v / pow(2, bit_depth));
 }
 
-double get_average_amplitude(int f, const double complex sample[], const size_t sample_size){
+double get_average_amplitude(int f, const double complex frame[], const size_t frame_size){
     /*
     Method to determine the amplitude of frequencies surrounding the amplitude at f (average_amplitude).
 
@@ -26,12 +26,12 @@ double get_average_amplitude(int f, const double complex sample[], const size_t 
     */
     double sum = 0;
     size_t lb, ub;
-    //if the set indices fall outside the upper bound of sample
-    if(f + floor(PD_AVRG_AMPLITUDE_ARR_SIZE / 2) > sample_size){
+    //if the set indices fall outside the upper bound of frame
+    if(f + floor(PD_AVRG_AMPLITUDE_ARR_SIZE / 2) > frame_size){
         //use the last set of values that make a full set.
-        lb = sample_size - PD_AVRG_AMPLITUDE_ARR_SIZE;
-        ub = sample_size;
-    //if the set indices fall outside the upper bound of sample 
+        lb = frame_size - PD_AVRG_AMPLITUDE_ARR_SIZE;
+        ub = frame_size;
+    //if the set indices fall outside the upper bound of frame 
     } else if(f - floor(PD_AVRG_AMPLITUDE_ARR_SIZE / 2) < 0){
         //use the first set of values that make a full set.
         lb = 0;
@@ -43,13 +43,13 @@ double get_average_amplitude(int f, const double complex sample[], const size_t 
     }
     for(size_t i = lb; i < ub; i++){
         //sum the values
-        sum += get_amplitude(sample[i], sample_size);
+        sum += get_amplitude(frame[i], frame_size);
     }
-    //divide by the size of the sample.
+    //divide by the size of the frame.
     return sum / PD_AVRG_AMPLITUDE_ARR_SIZE;
 }
 
-frequency_bin* get_notes(const double complex sample[], const size_t sample_size, size_t sample_rate, const size_t bit_depth){
+frequency_bin* get_notes(const double complex frame[], const size_t frame_size, size_t sample_rate, const size_t bit_depth){
     /*
     Method to determine the peak frequencies of a frequency spectrum, which are possible
     notes of the audio.
@@ -64,16 +64,16 @@ frequency_bin* get_notes(const double complex sample[], const size_t sample_size
     double average_amplitude, prev_amplitude;
 
     double amplitude = 0;
-    double next_amplitude = get_amplitude(sample[1], sample_size);
+    double next_amplitude = get_amplitude(frame[1], frame_size);
 
     size_t i = 0;
     
-    for(size_t f = 1; f < floor(sample_size / 2); f++){
-        average_amplitude = get_average_amplitude(f, sample, sample_size);
+    for(size_t f = 1; f < floor(frame_size / 2); f++){
+        average_amplitude = get_average_amplitude(f, frame, frame_size);
         
         prev_amplitude = amplitude;
         amplitude = next_amplitude;
-        next_amplitude = get_amplitude(sample[f+1], sample_size);
+        next_amplitude = get_amplitude(frame[f+1], frame_size);
 
         if(
             i < PD_NOTES_ARR_SIZE //avoids overfilling array and segfaults
@@ -81,7 +81,7 @@ frequency_bin* get_notes(const double complex sample[], const size_t sample_size
             && amplitude_is_maxima(prev_amplitude, amplitude, next_amplitude)
             && amplitude_is_above_threshold(amplitude, average_amplitude)
         ){
-            notes[i][0] = f * sample_rate / sample_size;
+            notes[i][0] = f * sample_rate / frame_size;
             notes[i][1] = decibels(amplitude, bit_depth);
             i++;
         }
